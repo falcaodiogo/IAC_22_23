@@ -1,43 +1,46 @@
 	.data
-	
-str1:	.asciiz "Introduza uma string\n"
-str:	.space 40
+str1:   	.asciiz "Introduza uma string\n"
+str:    	.space 40
 result: 	.asciiz "Numero: "
-
 
 	.text
 	.globl main
-	
-main:	li 	$v0, 4
-	la 	$a0, str1
-	syscall			# print de str1
-	
-	la 	$a0, str		# $a0 = str
-	
-	li	$a1, 10		
-	li	$v0, 8		# input do user = $v0
-	syscall
-	
-	li 	$t0, 0		# $t0 = 0 (n)
-for:	li	$t1, 0		# $t1 = 0 (i) -> i=0 ate i='\0'
-test0:	la	$t2, str		# $str[0] em $t2
-	addu 	$t3, $t2, $t1	# &str[i] em $t3
-	lb	$t4, 0($t3)		# str[i] em $t4
-	beqz	$t4, end0
-body0:
-if1:	blt	$t4, '0', end1
-	bgt	$t4, '9', end1
 
-then1:	addi 	$t0, $t0, 1
-end1:
+main:
+    	li  $v0, 4
+    	la  $a0, str1
+    	syscall           	# imprimir str1
 
-next0:	addi	$t1, $t1, 1
-	j	test0
-	
-end0:	la	$a0, result
-	li 	$v0, 4
-	syscall
+    	la  $a0, str       	# $a0 = str
 
-	li	$v0, 10
-	syscall
-	
+    	li  $a1, 40       	# tamanho máximo da string (40)
+    	li  $v0, 8        	# ler string
+    	syscall
+
+    	li  $t0, 0         # $t0 = 0 (contador de caracteres alfabéticos)
+    	li  $t1, 0         # $t1 = 0 (índice do caractere atual)
+
+loop:
+    	lb  $t2, str($t1)  	# carregar o caractere atual em $t2
+    	beqz $t2, end     	# sair do loop se o caractere for nulo (\0)
+
+    	blt $t2, 'a', next 	# verificar se o caractere é menor que 'a'
+    	bgt $t2, 'z', next 	# verificar se o caractere é maior que 'z'
+
+    	addi $t0, $t0, 1   	# incrementar o contador de caracteres alfabéticos
+
+next:
+    	addi $t1, $t1, 1   	# incrementar o índice do caractere
+    	j loop
+
+end:
+    	la  $a0, result
+    	li  $v0, 4
+    	syscall
+
+    	move $a0, $t0     	# carregar o número de caracteres alfabéticos em $a0
+    	li   $v0, 1       	# imprimir inteiro
+    	syscall
+
+    	li   $v0, 10      	# sair do programa
+    	syscall
