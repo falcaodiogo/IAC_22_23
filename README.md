@@ -1,5 +1,6 @@
 # IAC_22_23
-Pratical classes + theoretical summaries of IAC in UA (year 2022/23) - MIPS
+Pratical classes + theoretical summaries of IAC in UA (year 2022/23) - MIPS <br />
+Nota Final: 12
 
 ## Nota:
 O ficheiro "Mars4_Un_oficial" é apenas o MARS com temas:
